@@ -1,0 +1,9 @@
+<launch>
+
+  <node respawn="true" pkg="joy" type="joy_node" name="joystick_drive">
+    <param name="dev" type="string" value="/dev/input/js1" />
+  </node>
+
+  <node pkg="couch_teleop" type="couch_teleop" name="couch_teleop"/>
+
+</launch>
