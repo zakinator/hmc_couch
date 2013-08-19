@@ -33,7 +33,7 @@ CouchTeleop::CouchTeleop():
   nh_.param("scale_linear", l_scale_, l_scale_);
 // %EndTag(PARAMS)%
 // %Tag(PUB)%
-  vel_pub_ = nh_.advertise<>("", 1);
+  vel_pub_ = nh_.advertise<couch_control::MotorCommand>("/test", 1);
 // %EndTag(PUB)%
 // %Tag(SUB)%
   joy_sub_ = nh_.subscribe<sensor_msgs::Joy>("joy", 10, &TeleopTurtle::joyCallback, this);

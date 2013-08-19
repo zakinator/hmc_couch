@@ -4,7 +4,7 @@ project(couch_teleop)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS joy roscpp)
+find_package(catkin REQUIRED COMPONENTS joy roscpp couch_control)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -72,11 +72,12 @@ include_directories(
 # )
 
 ## Declare a cpp executable
-# add_executable(couch_teleop_node src/couch_teleop_node.cpp)
+add_executable(couch_teleop src/couch_teleop.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
 # add_dependencies(couch_teleop_node couch_teleop_generate_messages_cpp)
+add_dependencies(couch_teleop couch_control_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(couch_teleop_node

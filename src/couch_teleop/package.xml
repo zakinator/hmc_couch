@@ -42,8 +42,10 @@
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>joy</build_depend>
+  <build_depend>couch_control</build_depend>
   <run_depend>roscpp</run_depend>
   <run_depend>joy</run_depend>
+  <run_depend>couch_control</run_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
