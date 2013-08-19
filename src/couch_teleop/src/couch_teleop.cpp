@@ -17,7 +17,7 @@ private:
 
   int linear_, angular_;
   double l_scale_, a_scale_;
-  ros::Publisher vel_pub_;
+  ros::Publisher cmd_pub_;
   ros::Subscriber joy_sub_;
   
 };
@@ -33,19 +33,19 @@ CouchTeleop::CouchTeleop():
   nh_.param("scale_linear", l_scale_, l_scale_);
 // %EndTag(PARAMS)%
 // %Tag(PUB)%
-  vel_pub_ = nh_.advertise<couch_control::MotorCommand>("/test", 1);
+  cmd_pub_ = nh_.advertise<couch_control::MotorCommand>("/test", 1);
 // %EndTag(PUB)%
 // %Tag(SUB)%
-  joy_sub_ = nh_.subscribe<sensor_msgs::Joy>("joy", 10, &TeleopTurtle::joyCallback, this);
+  joy_sub_ = nh_.subscribe<sensor_msgs::Joy>("joy", 10, &CouchTeleop::joyCallback, this);
 // %EndTag(SUB)%
 }
 // %Tag(CALLBACK)%
-void TeleopTurtle::joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
+void CouchTeleop::joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
 {
-  turtlesim::Velocity vel;
-  vel.angular = a_scale_*joy->axes[angular_];
-  vel.linear = l_scale_*joy->axes[linear_];
-  vel_pub_.publish(vel);
+  couch_control::MotorCommand cmd;
+  cmd.left = 300 * a_scale_*joy->axes[angular_];
+  cmd.right = 300 * l_scale_*joy->axes[linear_];
+  cmd_pub_.publish(cmd);
 }
 // %EndTag(CALLBACK)%
 // %Tag(MAIN)%

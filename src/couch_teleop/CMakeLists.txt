@@ -80,9 +80,9 @@ add_executable(couch_teleop src/couch_teleop.cpp)
 add_dependencies(couch_teleop couch_control_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(couch_teleop_node
-#   ${catkin_LIBRARIES}
-# )
+ target_link_libraries(couch_teleop
+   ${catkin_LIBRARIES}
+ )
 
 #############
 ## Install ##
