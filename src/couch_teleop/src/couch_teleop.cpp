@@ -2,6 +2,7 @@
 // %Tag(INCLUDE)%
 #include <ros/ros.h>
 #include <sensor_msgs/Joy.h>
+#include "couch_control/MotorCommand.h"
 // %EndTag(INCLUDE)%
 // %Tag(CLASSDEF)%
 class CouchTeleop
