@@ -29,7 +29,7 @@ CouchTeleop::CouchTeleop()
   nh_.param("y_scale", y_scale_, 1.0);
 // %EndTag(PARAMS)%
 // %Tag(PUB)%
-  cmd_pub_ = nh_.advertise<couch_control::MotorCommand>("/test", 1);
+  cmd_pub_ = nh_.advertise<couch_control::MotorCommand>("/couchMotors", 1);
 // %EndTag(PUB)%
 // %Tag(SUB)%
   joy_sub_ = nh_.subscribe<sensor_msgs::Joy>("joy", 10, &CouchTeleop::joyCallback, this);
