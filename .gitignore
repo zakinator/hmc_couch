@@ -1,0 +1,12 @@
+*/build/*
+*build/
+*bin/
+devel/
+msg_gen/
+srv_gen/
+*.swo
+*.swp
+*.cfgc
+*.so
+*.pyc
+*CMakeCache.txt
