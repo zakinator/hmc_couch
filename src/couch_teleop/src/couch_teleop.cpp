@@ -41,8 +41,8 @@ void CouchTeleop::joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
   couch_control::MotorCommand cmd;
   double xaxis = joy->axes[0] * x_scale_;
   double yaxis = joy->axes[1] * y_scale_;
-  cmd.left = (yaxis + xaxis) * 300.0;
-  cmd.right = (yaxis - xaxis) * 300.0;
+  cmd.left = (yaxis - xaxis) * 300.0;
+  cmd.right = (yaxis + xaxis) * 300.0;
   cmd.left = std::max<double>(std::min<double>(cmd.left,300.0),-300.0);
   cmd.right = std::max<double>(std::min<double>(cmd.right,300.0),-300.0);
   //cmd.left = 300.0 * a_scale_*joy->axes[angular_];

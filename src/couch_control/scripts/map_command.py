@@ -39,7 +39,7 @@ REV          = 360              # 360 degrees per rev (range data is stored in d
 
 # OPTIONS
 SHOW_HOUGH = False              # set to true to show Hough transformation image
-DANGER_SIZE = 30
+DANGER_SIZE = 60
 
 # OTHERS
 CHECK_TIME = 20
@@ -167,7 +167,6 @@ def init_GUI():
     # initialize ROS subscription
     rospy.init_node("range_listener", anonymous=True)
 
-    ######## CHECK WITH ALISTAIR AND BEN ########
     rospy.Subscriber("scan", LaserScan, range_callback )
 
     rospy.Subscriber("navCommand", NavCommand, nav_callback )
@@ -175,7 +174,7 @@ def init_GUI():
     # initialize ROS publishers
     D.hallwayType = rospy.Publisher("hallwayType", HallwayType)
 
-    D.motorPub = rospy.Publisher("couchCommands", MotorCommand)
+    D.motorPub = rospy.Publisher("couchMotors", MotorCommand)
 
     # initialize ROS service
     #rospy.wait_for_service('tank') # wait until the motors are available
@@ -195,10 +194,14 @@ def _motor_broadcast(left, right):
         inputs: motor powers (int) left and right
         output: broadcasts the motor commands to the motorCommand topic
     """
+    if left > 80:
+        left = 80
+    if right > 80:
+        right = 80
     # correctly format motor command
     motorPower = MotorCommand()
-    motorPower.left  = left/2
-    motorPower.right = right/2
+    motorPower.left  = left
+    motorPower.right = right
 
     # broadcast motor command
     D.motorPub.publish(motorPower)
@@ -208,7 +211,8 @@ def range_callback(data):
     """ handles published range data and updates global """
     global D
 
-    D.ranges = data.range_data
+    D.ranges = data.ranges
+    D.ranges = D.ranges[::-1]
 
 
 def nav_callback(data):
@@ -299,7 +303,7 @@ def wallFollow():
     global D
    
     # set up variables and constants
-    speed = 250
+    speed = 40
     k = 1.0
     angle_offset = 15
     distance_offset = 150
