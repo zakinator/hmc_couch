@@ -12,9 +12,9 @@ import roslib; roslib.load_manifest('couch_control')
 import rospy
 import cv
 
-from neato_mudd.msg import *
+from couch_control.msg import *
 from time import sleep
-from neato import xv11
+#from neato import xv11
 from math import *
 from navigation import *
 
