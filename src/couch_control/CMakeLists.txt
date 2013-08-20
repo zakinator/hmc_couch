@@ -23,6 +23,8 @@ find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs message_generation
  add_message_files(
     FILES
     MotorCommand.msg
+    HallwayType.msg
+    NavCommand.msg
  )
 
 ## Generate services in the 'srv' folder

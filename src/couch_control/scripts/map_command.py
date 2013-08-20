@@ -197,8 +197,8 @@ def _motor_broadcast(left, right):
     """
     # correctly format motor command
     motorPower = MotorCommand()
-    motorPower.left  = left
-    motorPower.right = right
+    motorPower.left  = left/2
+    motorPower.right = right/2
 
     # broadcast motor command
     D.motorPub.publish(motorPower)
