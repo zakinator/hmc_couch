@@ -1,0 +1,1 @@
+string hall_type
