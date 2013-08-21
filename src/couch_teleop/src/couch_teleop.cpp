@@ -26,7 +26,7 @@ private:
   double xaxis = 0;
   double yaxis = 0;
 
-  double alpha = 0.5;
+  double alpha = 0.1;
   double left = 0;
   double right = 0;
 };
@@ -59,6 +59,7 @@ void CouchTeleop::timerCallback(const ros::TimerEvent& timer)
   //ROS_ERROR("timer!");
   double newLeft = (yaxis - xaxis) * 300.0;
   double newRight = (yaxis + xaxis) * 300.0;
+
 
   left = alpha*newLeft + (1-alpha)*left;
   right = alpha*newRight + (1-alpha)*right;
