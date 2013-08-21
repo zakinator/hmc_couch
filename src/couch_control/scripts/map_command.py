@@ -303,7 +303,7 @@ def wallFollow():
     global D
    
     # set up variables and constants
-    speed = 40
+    speed = 50
     k = 1.0
     angle_offset = 15
     distance_offset = 150
@@ -379,8 +379,8 @@ def wallFollow():
             point = (D.midpoint[index][0], D.midpoint[index][1])
             cv.Line(D.image, point, point, cv.CV_RGB(255, 255, 255), 20, 8)           
             delta = 90 - abs(theta)
-            if delta < 5:
-                delta = 5           
+            if delta < 15:
+                delta = 15           
             if theta > 0:
                 D.tank(speed - delta, speed + delta)
             else:
