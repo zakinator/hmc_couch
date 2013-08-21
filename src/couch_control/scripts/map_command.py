@@ -356,12 +356,6 @@ def wallFollow():
         if D.next_dir != "":
             print str(D.next_dir)
             turn(D.next_dir)     
-        elif lineAhead:
-            print "No command received"
-            if lineRight:
-                turn(LEFT)
-            else:
-                turn(RIGHT)
                 
         # danger zone detecting
         elif len(D.dangerList) > minListNumber:
@@ -397,11 +391,9 @@ def turn(direction):
     global D
     D.next_dir = ""
     if direction == "L":
-        D.text = "Turning Left..."
         D.tank(-50,50)
         rospy.sleep(1.5)
     elif direction == "R":
-        D.text = "Turning Right..."
         D.tank(50,-50)
         rospy.sleep(1.5)
     elif direction == "STOP":
@@ -432,14 +424,15 @@ def broadcast():
     if len(D.behind) > 5:
         behind = True
 
-########## print ahead, left, right
+    # calculate how many walls are blocked
     dir_sum = ahead + left + right
 
     if dir_sum == 3:
         if D.send:
             D.broadcast.append("D")
     elif dir_sum == 2:
-        if (not ahead):         
+        # hallway type
+        if (not ahead):
 #######  print "No intersection, move forward"
             D.send_counter += 1
             D.broadcast = []
@@ -459,16 +452,22 @@ def broadcast():
             if D.send:
                 if left:
                     D.broadcast.append("LR")
+		    D.text = "LR"
                 elif right:
                     D.broadcast.append("LL")
+		    D.text = "LL"
     elif dir_sum == 1:
+	D.send_counter = 0
         if D.send:
             if ahead:
                 D.broadcast.append("TU")
+		D.text = "TU"
             elif left:
                 D.broadcast.append("TR")
+		D.text = "TR"
             elif right:
                 D.broadcast.append("TL")
+		D.text = "TL"
     else:
         if D.send:
             D.broadcast.append("+")
@@ -486,15 +485,16 @@ def broadcast():
 
 
 def send_dir():
+    """send the direction to the map"""
     global D
    ## print "Send " + str(D.broadcast[-1])
 
     message = HallwayType()     #Broadcast to TMap
     message.hall_type = str(D.broadcast[-1])
-  #  message.__setattr__("hall_type", str(D.broadcast[-1]))
+
     D.hallwayType.publish(message) 
 
-    print "Sent corner"
+    print "Sent: " + str(D.broadcast[-1])
 
     D.send = False
     D.corner_type = 0
