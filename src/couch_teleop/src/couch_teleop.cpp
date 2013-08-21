@@ -13,6 +13,7 @@ public:
 
 private:
   void joyCallback(const sensor_msgs::Joy::ConstPtr& joy);
+  void timerCallback(const ros::TimerEvent& timer);
   
   ros::NodeHandle nh_;
 
@@ -20,6 +21,14 @@ private:
   ros::Publisher cmd_pub_;
   ros::Subscriber joy_sub_;
   
+  ros::Timer joy_timer_;
+
+  double xaxis = 0;
+  double yaxis = 0;
+
+  double alpha = 0.5;
+  double left = 0;
+  double right = 0;
 };
 // %EndTag(CLASSDEF)%
 // %Tag(PARAMS)%
@@ -34,15 +43,29 @@ CouchTeleop::CouchTeleop()
 // %Tag(SUB)%
   joy_sub_ = nh_.subscribe<sensor_msgs::Joy>("joy", 10, &CouchTeleop::joyCallback, this);
 // %EndTag(SUB)%
+  joy_timer_ = nh_.createTimer(ros::Duration(0.02), &CouchTeleop::timerCallback, this);
 }
 // %Tag(CALLBACK)%
 void CouchTeleop::joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
 {
+  //ROS_ERROR("joy!");
+  xaxis = joy->axes[0] * x_scale_;
+  yaxis = joy->axes[1] * y_scale_;
+
+}
+// %Tag(CALLBACK)%
+void CouchTeleop::timerCallback(const ros::TimerEvent& timer)
+{  
+  //ROS_ERROR("timer!");
+  double newLeft = (yaxis - xaxis) * 300.0;
+  double newRight = (yaxis + xaxis) * 300.0;
+
+  left = alpha*newLeft + (1-alpha)*left;
+  right = alpha*newRight + (1-alpha)*right;
+
   couch_control::MotorCommand cmd;
-  double xaxis = joy->axes[0] * x_scale_;
-  double yaxis = joy->axes[1] * y_scale_;
-  cmd.left = (yaxis - xaxis) * 300.0;
-  cmd.right = (yaxis + xaxis) * 300.0;
+  cmd.left = left;
+  cmd.right = right;
   cmd.left = std::max<double>(std::min<double>(cmd.left,300.0),-300.0);
   cmd.right = std::max<double>(std::min<double>(cmd.right,300.0),-300.0);
   //cmd.left = 300.0 * a_scale_*joy->axes[angular_];
