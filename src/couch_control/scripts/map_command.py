@@ -255,7 +255,7 @@ def findHoughLines():
                            pi / 180, threshold, min_line_len, max_gap_len)
 
     # draw the danger zone
-    cv.Rectangle(D.image, (CENTER - 30,CENTER - 90), (CENTER + 30, CENTER -30), cv.RGB(25,25,112), 2,8)
+    cv.Rectangle(D.image, (CENTER - DANGER_SIZE,CENTER - 3*DANGER_SIZE), (CENTER + DANGER_SIZE, CENTER - DANGER_SIZE), cv.RGB(25,25,112), 2,8)
 
     # draw the intersection type
     cv.PutText(D.image, D.text, (30,30), D.font, cv.RGB(255,255,255))
@@ -391,11 +391,11 @@ def turn(direction):
     D.next_dir = ""
     if direction == "L":
         D.text = "Turning Left..."
-        D.tank(-100,100)
+        D.tank(-50,50)
         rospy.sleep(1.5)
     elif direction == "R":
         D.text = "Turning Right..."
-        D.tank(100,-100)
+        D.tank(50,-50)
         rospy.sleep(1.5)
     elif direction == "STOP":
         D.tank(0,0)
