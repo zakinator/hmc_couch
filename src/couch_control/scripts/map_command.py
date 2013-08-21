@@ -212,7 +212,8 @@ def range_callback(data):
     global D
 
     D.ranges = data.ranges
-    D.ranges = D.ranges[::-1]
+    # flip scans because the laser scanner is upside down
+    D.ranges = [D.ranges[0]] + D.ranges[:0:-1]
 
 
 def nav_callback(data):
@@ -297,14 +298,13 @@ def findHoughLines():
     
 
 
-###### TODO #######
 def wallFollow():
     """ tries to keep the wall lines vertical using arcade control """
     global D
    
     # set up variables and constants
     speed = 50
-    k = 1.0
+    k = 1.5
     angle_offset = 15
     distance_offset = 150
     x_sum = 0
@@ -363,7 +363,8 @@ def wallFollow():
                 
         # danger zone detecting
         elif len(D.dangerList) > minListNumber:
-            delta_p = (70 - abs(CENTER - 30 - y_avg))
+            print "Danger detected! Avoiding..."
+            delta_p = (70 - abs(CENTER - DANGER_SIZE - y_avg))
             if x_avg > CENTER + 5:
                 D.tank(100 - delta_p,200 + delta_p)
             elif x_avg < CENTER - 5:
@@ -379,12 +380,12 @@ def wallFollow():
             point = (D.midpoint[index][0], D.midpoint[index][1])
             cv.Line(D.image, point, point, cv.CV_RGB(255, 255, 255), 20, 8)           
             delta = 90 - abs(theta)
-            if delta < 15:
-                delta = 15           
+            if delta < 10:
+                delta = 10           
             if theta > 0:
-                D.tank(speed - delta, speed + delta)
+                D.tank(speed - k*delta, speed + k*delta)
             else:
-                D.tank(speed + delta ,speed - delta)
+                D.tank(speed + k*delta ,speed - k*delta)
 
     except:
         pass
