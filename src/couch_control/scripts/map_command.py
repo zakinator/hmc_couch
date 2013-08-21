@@ -39,7 +39,7 @@ REV          = 360              # 360 degrees per rev (range data is stored in d
 
 # OPTIONS
 SHOW_HOUGH = False              # set to true to show Hough transformation image
-DANGER_SIZE = 60
+DANGER_SIZE = 30
 
 # OTHERS
 CHECK_TIME = 20
@@ -213,8 +213,7 @@ def range_callback(data):
 
     D.ranges = data.ranges
     # flip scans because the laser scanner is upside down
-    D.ranges = [D.ranges[0]] + D.ranges[:0:-1]
-
+    D.ranges = (D.ranges[0],) + D.ranges[:0:-1]
 
 def nav_callback(data):
     global D
@@ -314,6 +313,8 @@ def wallFollow():
     lineAhead = False
     lineLeft = False
     lineRight = False
+
+    right_pwr_increase = 5
     
     
     
@@ -356,6 +357,7 @@ def wallFollow():
             print str(D.next_dir)
             turn(D.next_dir)     
         elif lineAhead:
+            print "No command received"
             if lineRight:
                 turn(LEFT)
             else:
@@ -383,7 +385,7 @@ def wallFollow():
             if delta < 10:
                 delta = 10           
             if theta > 0:
-                D.tank(speed - k*delta, speed + k*delta)
+                D.tank(speed - k*delta, speed + k*(delta + right_pwr_increase))
             else:
                 D.tank(speed + k*delta ,speed - k*delta)
 
