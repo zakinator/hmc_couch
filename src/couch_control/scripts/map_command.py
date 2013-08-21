@@ -90,9 +90,10 @@ def rangeGUI():
                 D.dangerList.append((x,y))
 
             # check the points in the cross zone and put them in four lists
-            if x < CENTER - 20 and y > CENTER - 20 and y < CENTER + 10:
+            if x < CENTER - 20 and y > CENTER - 10 and y < CENTER + 20:
                 D.left.append((x,y))
-            elif x > CENTER + 20 and y > CENTER - 20 and y < CENTER + 10:
+                ################################
+            elif x > CENTER + 20 and y > CENTER - 10 and y < CENTER + 20:
                 D.right.append((x,y))
             elif y < CENTER - 30 and y > 60 and x < CENTER + 10 and x > CENTER - 10:
                 D.ahead.append((x,y))
