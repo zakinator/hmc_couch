@@ -62,8 +62,8 @@ void motor_cb( const couch_control::MotorCommand& motor_cmd){
   char charRight [5];
   itoa(powerL, charLeft, 10);
   itoa(powerR, charRight, 10);
-  nh.loginfo(charLeft);
-  nh.loginfo(charRight);
+//  nh.loginfo(charLeft);
+//  nh.loginfo(charRight);
   
   // write to the ESCs
   motorL.write(powerL);
@@ -83,14 +83,14 @@ void led_cb( const std_msgs::Int32& led_input){
   int led_b = led_val      &0xff; // read first byte
   
   // debugging
-  char* led_msg;
-  sprintf(led_msg, "LED val: %i", led_val);
-  nh.loginfo(led_msg);
+//  char led_msg[25];
+//  sprintf(led_msg, "LED val: %i", led_val);
+//  nh.loginfo(led_msg);
   
   // write values to the LED pins
-  analogWrite(led_r, LEDR);
-  analogWrite(led_g, LEDG);
-  analogWrite(led_b, LEDB);
+  analogWrite(LEDR, led_r);
+  analogWrite(LEDG, led_g);
+  analogWrite(LEDB, led_b);
 }
 
 
@@ -209,6 +209,7 @@ void setup(){
   // initialize ROS node and subscriber
   nh.initNode();
   nh.subscribe(sub);
+  nh.subscribe(led_sub);
   
   // wait until setup is complete so ROS info can be printed
   while(!nh.connected()) nh.spinOnce();
