@@ -82,6 +82,11 @@ void led_cb( const std_msgs::Int32& led_input){
   int led_g = (led_val>> 8)&0xff; // read second byte
   int led_b = led_val      &0xff; // read first byte
   
+  // debugging
+  char* led_msg;
+  sprintf(led_msg, "LED val: %i", led_val);
+  nh.loginfo(led_msg);
+  
   // write values to the LED pins
   analogWrite(led_r, LEDR);
   analogWrite(led_g, LEDG);
